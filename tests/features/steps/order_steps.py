@@ -21,7 +21,7 @@ def place_order(context, shipping_type):
     context.shipping_id = context.order.place_order(shipping_type)
 
 
-@when('I place an order with shipping type "{shipping_type}" and due date "{due_date_str}"')
+@when('I place an order with shipping type "{shipping_type}" and custom due date "{due_date_str}"')
 def place_order_with_due_date(context, shipping_type, due_date_str):
     # Створюємо мок сервісу доставки
     context.shipping_service = MagicMock(spec=ShippingService)
