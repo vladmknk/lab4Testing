@@ -1,4 +1,5 @@
 name: CI
+
 on:
     push:
         branches: ['main']
@@ -37,10 +38,20 @@ jobs:
                   exitcode="$?"
                   echo "exitcode=$exitcode" >> $GITHUB_OUTPUT
                   exit "$exitcode"
+                  
+            - name: Run unit tests
+              run: |
+                  pytest tests/test_unit.py -v
+                  
+            - name: Run BDD tests
+              run: |
+                  behave tests/features
+                  
             - name: Run integration tests
               run: |
-                  pytest --maxfail=1 --disable-warnings -v
+                  pytest tests/test_integration.py -v
                   coverage run -m pytest && coverage report -m
+                  
             - name: Teardown Docker
               if: always()
-              run: docker-compose down
+              run: docker-compose down 
