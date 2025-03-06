@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import MagicMock
-from app.eshop import Product, ShoppingCart, Order
+from app.eshop import Product, Shipment, ShoppingCart, Order
 from services.service import ShippingService
 
 
@@ -32,28 +32,40 @@ class TestProduct(unittest.TestCase):
         # Намагаємося купити більше, ніж є в наявності
         with self.assertRaises(ValueError):
             self.product.buy(25)
-            
+
     def test_product_equality(self):
         # Перевірка рівності продуктів з однаковим ім'ям
         product1 = Product(name="SameProduct", price=10.0, available_amount=5)
         product2 = Product(name="SameProduct", price=20.0, available_amount=10)
-        self.assertEqual(product1, product2, "Продукти з однаковим ім'ям мають бути рівні")
-        
+        self.assertEqual(
+            product1, product2, "Продукти з однаковим ім'ям мають бути рівні"
+        )
+
     def test_product_inequality(self):
         # Перевірка нерівності продуктів з різними іменами
         product1 = Product(name="Product1", price=10.0, available_amount=5)
         product2 = Product(name="Product2", price=10.0, available_amount=5)
-        self.assertNotEqual(product1, product2, "Продукти з різними іменами не мають бути рівні")
-        
+        self.assertNotEqual(
+            product1, product2, "Продукти з різними іменами не мають бути рівні"
+        )
+
     def test_product_hash(self):
         # Перевірка хеш-функції продукту
         product = Product(name="HashProduct", price=10.0, available_amount=5)
-        self.assertEqual(hash(product), hash("HashProduct"), "Хеш продукту має дорівнювати хешу його імені")
-        
+        self.assertEqual(
+            hash(product),
+            hash("HashProduct"),
+            "Хеш продукту має дорівнювати хешу його імені",
+        )
+
     def test_product_str(self):
         # Перевірка строкового представлення продукту
         product = Product(name="StrProduct", price=10.0, available_amount=5)
-        self.assertEqual(str(product), "StrProduct", "Строкове представлення продукту має дорівнювати його імені")
+        self.assertEqual(
+            str(product),
+            "StrProduct",
+            "Строкове представлення продукту має дорівнювати його імені",
+        )
 
 
 class TestShoppingCart(unittest.TestCase):
@@ -107,14 +119,20 @@ class TestShoppingCart(unittest.TestCase):
             self.cart.contains_product(self.product),
             "Продукт має бути видалений з кошика",
         )
-        
+
     def test_submit_cart_order(self):
         # Перевірка, що submit_cart_order повертає список імен продуктів
         self.cart.add_product(self.product, 3)
         product_ids = self.cart.submit_cart_order()
         self.assertEqual(len(product_ids), 1, "Має бути повернений один продукт")
-        self.assertEqual(product_ids[0], "CartProduct", "Ім'я продукту має бути CartProduct")
-        self.assertEqual(len(self.cart.products), 0, "Кошик має бути порожнім після submit_cart_order")
+        self.assertEqual(
+            product_ids[0], "CartProduct", "Ім'я продукту має бути CartProduct"
+        )
+        self.assertEqual(
+            len(self.cart.products),
+            0,
+            "Кошик має бути порожнім після submit_cart_order",
+        )
 
 
 class TestOrder(unittest.TestCase):
@@ -134,10 +152,11 @@ class TestOrder(unittest.TestCase):
         self.order.place_order("Standard")
         self.cart.submit_cart_order.assert_called_once()
         self.shipping_service.create_shipping.assert_called_once()
-        
+
     def test_place_order_with_due_date(self):
         # Перевірка розміщення замовлення з вказаною датою доставки
         from datetime import datetime, timezone
+
         due_date = datetime.now(timezone.utc)
         self.order.place_order("Express", due_date)
         self.shipping_service.create_shipping.assert_called_with(
@@ -149,8 +168,10 @@ class TestShipment(unittest.TestCase):
     def setUp(self):
         self.shipping_service = MagicMock(spec=ShippingService)
         self.shipping_service.check_status.return_value = "in_progress"
-        self.shipment = Shipment(shipping_id="shipping-123", shipping_service=self.shipping_service)
-        
+        self.shipment = Shipment(
+            shipping_id="shipping-123", shipping_service=self.shipping_service
+        )
+
     def test_check_shipping_status(self):
         # Перевірка статусу доставки
         status = self.shipment.check_shipping_status()
@@ -159,4 +180,4 @@ class TestShipment(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main() 
+    unittest.main()
