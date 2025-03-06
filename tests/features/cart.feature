@@ -14,7 +14,7 @@ Feature: Shopping cart
     Then Product is not added to cart successfully
     
   Scenario: Calculate total for multiple products
-    Given The product has availability of "50"
+    Given A product with price "10" and availability "50"
     And A second product with availability "30", price "20", and name "SecondProduct"
     And An empty shopping cart
     When I add product to the cart in amount "2"

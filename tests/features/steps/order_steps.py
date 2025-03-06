@@ -10,7 +10,7 @@ def add_product_to_cart(context, amount):
     context.cart.add_product(context.product, int(amount))
 
 
-@when('I place an order with shipping type "{shipping_type}"')
+@when('I place a standard order with shipping type "{shipping_type}"')
 def place_order(context, shipping_type):
     # Створюємо мок сервісу доставки
     context.shipping_service = MagicMock(spec=ShippingService)
@@ -21,7 +21,7 @@ def place_order(context, shipping_type):
     context.shipping_id = context.order.place_order(shipping_type)
 
 
-@when('I place an order with shipping type "{shipping_type}" and custom due date "{due_date_str}"')
+@when('I place an express order for "{shipping_type}" with delivery date "{due_date_str}"')
 def place_order_with_due_date(context, shipping_type, due_date_str):
     # Створюємо мок сервісу доставки
     context.shipping_service = MagicMock(spec=ShippingService)

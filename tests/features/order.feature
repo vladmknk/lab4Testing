@@ -5,7 +5,7 @@ Feature: Order functionality
     Given A product with name "OrderProduct", price "30", and availability "20"
     And An empty shopping cart
     And I add product to the cart in amount "5"
-    When I place an order with shipping type "Standard"
+    When I place a standard order with shipping type "Standard"
     Then The order should be placed successfully
     And The cart should be empty
     And The product available amount should be "15"
@@ -14,7 +14,7 @@ Feature: Order functionality
     Given A product with name "OrderProduct", price "30", and availability "20"
     And An empty shopping cart
     And I add product to the cart in amount "5"
-    When I place an order with shipping type "Express" and custom due date "tomorrow"
+    When I place an express order for "Express" with delivery date "tomorrow"
     Then The order should be placed successfully
     And The cart should be empty
     

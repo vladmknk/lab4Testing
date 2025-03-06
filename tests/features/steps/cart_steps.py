@@ -8,6 +8,12 @@ def create_product_for_cart(context, availability):
     context.product = Product(name="any", price=123, available_amount=int(availability))
 
 
+@given('A product with price "{price}" and availability "{availability}"')
+def create_product_with_price(context, price, availability):
+    # Перетворюємо availability та price у числа
+    context.product = Product(name="any", price=float(price), available_amount=int(availability))
+
+
 @given('A second product with availability "{availability}", price "{price}", and name "{name}"')
 def create_second_product(context, availability, price, name):
     context.second_product = Product(name=name, price=float(price), available_amount=int(availability))
